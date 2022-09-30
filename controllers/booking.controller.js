@@ -59,3 +59,22 @@ exports.createBooking = async (req, res) => {
     return res.status(500).send({ message: error });
   }
 };
+
+// User gets all bookings made by them
+
+exports.getUserBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.findAll({
+      where: { guest_id: req.user.id },
+    });
+    if (!bookings) {
+      return res.status(404).json({ message: 'No booking found' });
+    }
+    return res.status(200).json({ bookings });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
+  }
+};
+
+
