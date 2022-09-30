@@ -18,11 +18,11 @@ router.get('/all', authenticate, findAll);
 
 router.put('/modify/:id', authenticate, updateHouseListing);
 
-router.delete('/single/house/:id', authenticate, deleteHouseListing);
+router.delete('/single/:id', authenticate, deleteHouseListing);
 
 router.all('/drop/all', authenticate, deleteAll);
 
-router.get('/my/houses', authenticate, findAllHousesBelongingToMe);
+router.get('/me', authenticate, findAllHousesBelongingToMe);
 
 // unprotected routes
 router.get('/single/house/:id', findOne);
