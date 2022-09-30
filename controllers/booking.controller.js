@@ -1,0 +1,61 @@
+const db = require('../models');
+const sendEmail = require('../utils/send_email');
+const sendSms = require('../utils/send_sms');
+
+const User = db.user;
+const Booking = db.booking;
+const HouseListing = db.house_listing;
+
+exports.createBooking = async (req, res) => {
+  try {
+    const { house_id, guest_id, start_date, end_date, total_price } = req.body;
+
+    //validate request
+    if (!(house_id || guest_id || start_date || end_date, total_price)) {
+      return res.status(400).send({
+        message: 'All fields are required',
+      });
+    }
+
+    // populate the owner_id field
+    const house = await HouseListing.findOne({ where: { id: house_id } });
+    if (!house) {
+      return res.status(404).json({ message: 'House not found' });
+    }
+    const booking = await Booking.create({
+      house_id: house.dataValues.id,
+      guest_id: req.user.id,
+      start_date,
+      end_date,
+      total_price,
+    });
+
+    // get the owner's email and phone number
+    const owner = await User.findOne({
+      where: { id: house.dataValues.owner_id },
+    });
+    if (!owner) {
+      return res.status(404).json({ message: 'Owner not found' });
+    }
+
+    // send email to owner
+    const host_email = owner.dataValues.email;
+    const host_phone = owner.dataValues.phone;
+    const host_name = owner.dataValues.name;
+    const access_code = Math.floor(100000 + Math.random() * 900000);
+    // send email to host
+    await sendEmail({
+      email: host_email,
+      subject: 'New booking request',
+      text: `You have a new booking request from ${booking.guest_id} for your house ${house.title}.`,
+    });
+
+    // send sms to host
+    await sendSms(host_name, host_phone, access_code);
+
+    return res.status(201).json({ booking });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
+  }
+};
