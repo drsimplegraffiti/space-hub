@@ -1,15 +1,16 @@
-const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const path = require('path');
 
-// cloudinary configuration
+const cloudinary = require('cloudinary').v2;
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-//multer configuration
+//multer config
+
 const upload = multer({
   storage: multer.diskStorage({}),
   fileFilter: (req, file, cb) => {
