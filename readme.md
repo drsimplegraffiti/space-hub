@@ -7,7 +7,7 @@
   - yarn
   - yarn start
 
-### Packages used
+### Packages used in this project
 
 > yarn add cloudinary express nodemon dotenv axios jsonwebtoken bcryptjs cors sequelize pg pg-hstore cors bcrypt morgan helmet
 
