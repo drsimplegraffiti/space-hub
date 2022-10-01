@@ -17,8 +17,18 @@ exports.createBooking = async (req, res) => {
       });
     }
 
-    // populate the owner_id field
-    const house = await HouseListing.findOne({ where: { id: house_id } });
+    // find a single house listing with an id and include the host details
+    const house = await HouseListing.findOne({
+      where: { id: house_id },
+      include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: ['id', 'name', 'email', 'phone', 'role'],
+        },
+      ],
+    });
+
     if (!house) {
       return res.status(404).json({ message: 'House not found' });
     }
@@ -76,5 +86,3 @@ exports.getUserBookings = async (req, res) => {
     return res.status(500).send({ message: error });
   }
 };
-
-
