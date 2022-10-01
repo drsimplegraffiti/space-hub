@@ -75,7 +75,7 @@ exports.findAllHouseListings = async (req, res) => {
     if (user.role !== 'admin') {
       return res
         .status(403)
-        .json({ message: 'Not authorized to perform this role..' });
+        .json({ message: 'Not authorized to perform this role' });
     }
     const houseListings = await HouseListing.findAll({
       include: [
@@ -90,4 +90,4 @@ exports.findAllHouseListings = async (req, res) => {
   } catch (error) {
     return res.status(500).send({ message: error });
   }
-};
+}
