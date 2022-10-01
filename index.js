@@ -6,6 +6,7 @@ const cors = require('cors');
 const userRoute = require('./routes/user.routes');
 const houseRoute = require('./routes/house_listing.routes');
 const bookingRoute = require('./routes/booking.routes');
+const adminRoute = require('./routes/admin.routes');
 const app = express();
 
 const db = require('./models');
@@ -31,6 +32,7 @@ const port = process.env.PORT || 3000;
 app.use('/api', userRoute);
 app.use('/api/house', houseRoute);
 app.use('/api/booking', bookingRoute);
+app.use('/api/admin', adminRoute);
 
 //404 error
 

@@ -1,3 +1,4 @@
+const { Op } = require('sequelize'); // OP is an alias for Sequelize.Op (https://sequelize.org/master/manual/model-querying-basics.html#operators)
 const db = require('../models');
 const sendEmail = require('../utils/send_email');
 const sendSms = require('../utils/send_sms');
@@ -86,3 +87,26 @@ exports.getUserBookings = async (req, res) => {
     return res.status(500).send({ message: error });
   }
 };
+
+// Search for bookings by date
+
+exports.searchBookings = async (req, res) => {
+  try {
+    const { start_date, end_date } = req.body;
+    const bookings = await Booking.findAll({
+      where: {
+        start_date: {
+          [Op.between]: [start_date, end_date],
+        },
+      },
+    });
+    if (!bookings) {
+      return res.status(404).json({ message: 'No booking found' });
+    }
+    return res.status(200).json({ bookings });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
+  }
+}
+

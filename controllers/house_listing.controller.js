@@ -1,4 +1,5 @@
 const db = require('../models');
+const { Op } = require('sequelize');
 const HouseListing = db.house_listing;
 const User = db.user;
 
