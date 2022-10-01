@@ -61,3 +61,5 @@
 | GET    | /api/admin/user/:id         | Get a user by id             |
 | GET    | /api/admin/houseListings    | Get all house listing        |
 | DELETE | /api/admin/houseListing/:id | Delete a house listing by id |
+
+---
